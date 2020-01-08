@@ -17,9 +17,6 @@ class SQLiteConnector extends \Illuminate\Database\Connectors\SQLiteConnector
     /** @var \PDO[] named in-memory database connections */
     protected static $named_connections = [];
 
-    /** @var array to store $config parametar for named connections */
-    protected static $config = [];
-
     /**
      * Establish a database connection.
      *
@@ -34,20 +31,13 @@ class SQLiteConnector extends \Illuminate\Database\Connectors\SQLiteConnector
         $name = $config['database'] ?? '';
         if (Str::startsWith($name, ':named-memory:')) {
             if (!isset(self::$named_connections[$name])) {
-                self::$config[$name] = $config;
-                $this->refreshNamedInMemoryConnection($name);
+                $options = $this->getOptions($config);
+                self::$named_connections[$name] = $this->createConnection('sqlite::memory:', $config, $options);
             }
 
             return self::$named_connections[$name];
         }
 
         return parent::connect($config);
-    }
-
-    public function refreshNamedInMemoryConnection($name)
-    {
-        $config = self::$config[$name];
-        $options = $this->getOptions($config);
-        self::$named_connections[$name] = $this->createConnection('sqlite::memory:', $config, $options);
     }
 }
