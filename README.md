@@ -1,6 +1,8 @@
 # DESCRIPTION
 
-This package extends Laravel's SQLiteConnector and introduces a database specification of the form `:named-memory:<name>`.
+This package provides `sqlite-named` driver that extends Laravel's `sqlite` driver.
+
+Using this driver allows you to specify a database in the form `named-memory:<name>`.
 (`<name>` is an arbitrary string (including empty string))
 
 It connects to SQLite's in-memory database as well as `:memory:`.
@@ -11,6 +13,31 @@ if `<name>` is same.
 
 ```shell
 composer require crhg/laravel-sqlite-named-memory-connection
+```
+
+# CONFIGURATION
+
+Specify `sqlite-named` for` driver` in `config/database.php`.
+
+`config/database.php`:
+```php
+    'connections' => [
+        //...
+        'sqlite-named' => [
+            'driver' => 'sqlite-named',
+            'url' => env('DATABASE_URL'),
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ],
+        //...
+    ],
+```
+
+`.env`:
+```dotenv
+DB_CONNECTION=sqlite-named
+DB_DATABASE=:named-memory:foo
 ```
 
 # BACKGROUND

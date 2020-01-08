@@ -18,9 +18,9 @@ class SQLiteNamedMemoryConnectionServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('db.connector.sqlite', SQLiteConnector::class);
+        $this->app->bind('db.connector.sqlite-named', SQLiteConnector::class);
 
-        Connection::resolverFor('sqlite', static function ($connection, $database, $prefix, $config) {
+        Connection::resolverFor('sqlite-named', static function ($connection, $database, $prefix, $config) {
             return new SQLiteConnection($connection, $database, $prefix, $config);
         });
     }
