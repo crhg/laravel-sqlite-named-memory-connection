@@ -1,6 +1,7 @@
 # 説明
 
-LaravelのSQLiteConnectorを拡張し、`:named-memory:<name>`という形式のデータベース指定を導入します。
+Laravelのデータベースのsqliteドライバを拡張したsqlite-namedドライバを導入します。
+このドライバを使用すると、`:named-memory:<name>`という形式のデータベース指定が可能になります。
 (`<name>`は任意の文字列(空文字列を含む))
 
 これは`:memory:`と同様にSQLiteのインメモリデータベースに接続しますが、`:memory:`が接続のたびに
@@ -11,6 +12,31 @@ LaravelのSQLiteConnectorを拡張し、`:named-memory:<name>`という形式の
 
 ```shell
 composer require crhg/laravel-sqlite-named-memory-connection
+```
+
+# 設定
+
+`config/database.php`で`driver`に`sqlite-named`を指定します。
+
+`config/database.php`:
+```php
+    'connections' => [
+        //...
+        'sqlite-named' => [
+            'driver' => 'sqlite-named',
+            'url' => env('DATABASE_URL'),
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ],
+        //...
+    ],
+```
+
+`.env`:
+```dotenv
+DB_CONNECTION=sqlite-named
+DB_DATABASE=:named-memory:foo
 ```
 
 # 背景
