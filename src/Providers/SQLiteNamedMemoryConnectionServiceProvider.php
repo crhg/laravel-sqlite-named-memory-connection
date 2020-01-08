@@ -10,6 +10,8 @@ namespace Crhg\SQLiteNamedMemoryConnection\Providers;
 
 
 use Crhg\SQLiteNamedMemoryConnection\Database\Connectors\SQLiteConnector;
+use Illuminate\Database\Connection;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Support\ServiceProvider;
 
 class SQLiteNamedMemoryConnectionServiceProvider extends ServiceProvider
@@ -17,6 +19,9 @@ class SQLiteNamedMemoryConnectionServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('db.connector.sqlite', SQLiteConnector::class);
-    }
 
+        Connection::resolverFor('sqlite', static function ($connection, $database, $prefix, $config) {
+            return new SQLiteConnection($connection, $database, $prefix, $config);
+        });
+    }
 }

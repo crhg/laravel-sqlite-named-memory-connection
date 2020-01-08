@@ -9,6 +9,9 @@
 namespace Crhg\SQLiteNamedMemoryConnection\Database\Connectors;
 
 
+use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Void_;
+
 class SQLiteConnector extends \Illuminate\Database\Connectors\SQLiteConnector
 {
     /** @var \PDO[] named in-memory database connections */
@@ -25,8 +28,8 @@ class SQLiteConnector extends \Illuminate\Database\Connectors\SQLiteConnector
      */
     public function connect(array $config): \PDO
     {
-        if (preg_match('/\A:named-memory:(.*)\z/', $config['database'] ?? '', $matches)) {
-            $name = $matches[1];
+        $name = $config['database'] ?? '';
+        if (Str::startsWith($name, ':named-memory:')) {
             if (!isset(self::$named_connections[$name])) {
                 $options = $this->getOptions($config);
                 self::$named_connections[$name] = $this->createConnection('sqlite::memory:', $config, $options);
