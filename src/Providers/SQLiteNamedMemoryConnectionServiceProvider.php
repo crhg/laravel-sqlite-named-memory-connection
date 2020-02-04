@@ -10,8 +10,8 @@ namespace Crhg\SQLiteNamedMemoryConnection\Providers;
 
 
 use Crhg\SQLiteNamedMemoryConnection\Database\Connectors\SQLiteConnector;
+use Crhg\SQLiteNamedMemoryConnection\Database\SQLiteConnection;
 use Illuminate\Database\Connection;
-use Illuminate\Database\SQLiteConnection;
 use Illuminate\Support\ServiceProvider;
 
 class SQLiteNamedMemoryConnectionServiceProvider extends ServiceProvider
